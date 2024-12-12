@@ -3,14 +3,14 @@ import requests
 import os
 
 def get_main_images_from_article(url):
-    # Gửi yêu cầu đến bài báo
+    # Submit request to article
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    # Dựa vào các thẻ chứa hình ảnh chính (phổ biến trên các trang báo)
+    # Based on tags containing main images (common on newspaper pages)
     main_images = []
 
-    # Tìm trong các thẻ <figure>, <div> hoặc các class liên quan
+    # Search in <figure>, <div> tags or related classes
     for figure in soup.find_all('figure'):
         img_tag = figure.find('img')
         if img_tag and 'src' in img_tag.attrs:
@@ -18,13 +18,13 @@ def get_main_images_from_article(url):
             if img_url not in main_images:  # Tránh trùng lặp
                 main_images.append(img_url)
 
-    # Tìm thêm trong các thẻ <img> có class liên quan
+    # Find more <img> tags with related classes
     for img_tag in soup.find_all('img', class_=['main-image', 'featured-image']):
         img_url = img_tag['src']
         if img_url not in main_images:
             main_images.append(img_url)
 
-    # Hoàn thiện URL nếu thiếu phần đầu
+    # Complete URL if header is missing
     main_images = [
         img if img.startswith('http') else f"{url.rsplit('/', 1)[0]}/{img}" for img in main_images
     ]
@@ -32,10 +32,10 @@ def get_main_images_from_article(url):
     return main_images
 
 def download_images(image_urls, download_folder):
-    # Tạo thư mục nếu chưa tồn tại
+    # Create directory if it does not exist
     os.makedirs(download_folder, exist_ok=True)
 
-    # Tải từng hình ảnh
+    # Load individual images
     for idx, img_url in enumerate(image_urls):
         try:
             response = requests.get(img_url, stream=True)
@@ -44,7 +44,7 @@ def download_images(image_urls, download_folder):
                 file_name = f"image_{idx + 1}.{file_extension}"
                 file_path = os.path.join(download_folder, file_name)
 
-                # Lưu hình ảnh vào thư mục
+                # Save image to folder
                 with open(file_path, 'wb') as img_file:
                     for chunk in response.iter_content(1024):
                         img_file.write(chunk)
