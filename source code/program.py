@@ -6,7 +6,7 @@ from moviepy.config import change_settings
 
 
 
-# Sử dụng
+
 if __name__ == "__main__":
     change_settings({"IMAGEMAGICK_BINARY": "C:/Program Files/ImageMagick-7.1.1-Q16-HDRI/magick.exe"})
     #Đường dẫn tới thư mục chứa ảnh và tệp âm thanh
@@ -24,5 +24,4 @@ if __name__ == "__main__":
     output_file = "output_video.mp4"  # Tên tệp video đầu ra
     title_text, _ = get_article_from_url(url)  # Tiêu đề của video
 
-    # Gọi hàm để tạo video
     create_video(image_folder, audio_file, output_file, title_text)
