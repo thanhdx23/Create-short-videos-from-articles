@@ -19,3 +19,6 @@ This project is a Python-based tool for creating short videos using images, audi
 2. **Voice Generation**: Generates a voice-over using Google Text-to-Speech (gTTS).
 3. **Image Downloading**: Extracts and downloads main images from the article.
 4. **Video Creation**: Combines images and audio into a video with a banner displaying the title.
+
+## How to Use
+Replace the URL in "program.py" with the URL of the article you want to process.
