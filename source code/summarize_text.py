@@ -3,30 +3,29 @@ from newspaper import Article
 import os
 
 from openai import OpenAI
-# Thiết lập API key của bạn
-
+# Set up your API key
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # create a list of models 
 GPT_MODELS = ["gpt-4o", "gpt-4o-mini"]
 
-# Hàm trích xuất tiêu đề và nội dung bài báo từ URL
+# Function to extract article title and content from URL
 def get_article_from_url(url):
     article = Article(url)
-    article.download()  # Tải nội dung bài báo
-    article.parse()  # Phân tích và trích xuất văn bản
-    title = article.title  # Lấy tiêu đề bài báo
-    content = article.text  # Lấy nội dung bài báo
-    return title, content  # Trả về cả tiêu đề và nội dung
+    article.download() # Download article content
+    article.parse()  # Text analysis and extraction
+    title = article.title  # Get the article title
+    content = article.text  # Get article content
+    return title, content  # Returns both title and content
 
 
-# Hàm tóm tắt bài báo với tiêu đề
+# Function to summarize article with title
 def summarize_text_with_title(title, content, model_name = "gpt-4o-mini"):
-    # Kết hợp tiêu đề và nội dung
+    # Combine title and content
     combined_text = f"Tiêu đề bài báo: {title}\n\nNội dung bài báo: {content}"
 
-    # Sử dụng OpenAI API v1.0.0 mới để tóm tắt văn bản kết hợp
+    # Use the OpenAI API for combined text summarization
     response = client.chat.completions.create(
         model= model_name,
         messages=[{"role": "system", "content": "You are a helpful assistant."},
@@ -35,7 +34,7 @@ def summarize_text_with_title(title, content, model_name = "gpt-4o-mini"):
     )
     return response.choices[0].message.content.strip()
 
-# Hàm lấy bài báo từ URL và tóm tắt bao gồm cả tiêu đề
+# Function to get article from URL and abstract including title
 def summarize_article_from_url(url):
     title, content = get_article_from_url(url)
     summary = summarize_text_with_title(title, content)
