@@ -21,22 +21,22 @@ def create_video(image_folder, audio_file, output_file, title_text, fps=24):
     ])
 
     if not image_files:
-        raise ValueError("Thư mục ảnh không chứa hình ảnh hợp lệ.")
+        raise ValueError("The directory images does not contain a valid image.")
 
     # Load audio file and get duration
     audio = AudioFileClip(audio_file)
-    audio_duration = audio.duration  # Thời lượng tệp âm thanh
+    audio_duration = audio.duration  # Audio file duration
 
     # Calculate display duration of each image
     image_duration = audio_duration / len(image_files)
 
     if image_duration <= 0:
-        raise ValueError("Thời gian hiển thị mỗi ảnh không đủ. Hãy tăng số lượng ảnh.")
+        raise ValueError("The display time for each image is not enough. Please increase the number of images.")
 
     # Create video from photos
     clips = []
     for image_file in image_files:
-        img_clip = ImageClip(image_file).set_duration(image_duration)  # Thời lượng hiển thị mỗi ảnh
+        img_clip = ImageClip(image_file).set_duration(image_duration)  # Display duration of each image
         clips.append(img_clip)
 
     # Merge photo clips into one video
