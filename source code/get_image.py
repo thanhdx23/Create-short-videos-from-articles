@@ -15,7 +15,7 @@ def get_main_images_from_article(url):
         img_tag = figure.find('img')
         if img_tag and 'src' in img_tag.attrs:
             img_url = img_tag['src']
-            if img_url not in main_images:  # Tránh trùng lặp
+            if img_url not in main_images: # Avoid duplication
                 main_images.append(img_url)
 
     # Find more <img> tags with related classes
@@ -40,7 +40,7 @@ def download_images(image_urls, download_folder):
         try:
             response = requests.get(img_url, stream=True)
             if response.status_code == 200:
-                file_extension = img_url.split('.')[-1]  # Lấy phần đuôi file
+                file_extension = img_url.split('.')[-1] # Get file extension
                 file_name = f"image_{idx + 1}.{file_extension}"
                 file_path = os.path.join(download_folder, file_name)
 
@@ -50,9 +50,9 @@ def download_images(image_urls, download_folder):
                         img_file.write(chunk)
                 print(f"Đã tải: {file_path}")
             else:
-                print(f"Lỗi khi tải hình ảnh: {img_url}")
+                print(f"Error loading image: {img_url}")
         except Exception as e:
-            print(f"Lỗi: {e} với hình ảnh: {img_url}")
+            print(f"Error: {e} with image: {img_url}")
 
 
             
